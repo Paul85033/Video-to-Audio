@@ -9,14 +9,14 @@ A microservices-based system that allows users to upload videos, convert them to
    - Gateway:
      - Authenticates user using **JWT** (validated against user data in **MySQL**).
      - Stores the video in **MongoDB**.
-     - Publishes a message to **RabbitMQ** for processing.
+     - Sends a message to **RabbitMQ** queue for processing.
 
 2. **Conversion Service**
-   - Subscribes to RabbitMQ for new video upload messages.
+   - Uses **RabbitMQ** to consume messages from the queue.
    - Retrieves the video from MongoDB.
    - Converts it to MP3.
    - Stores the MP3 file back in MongoDB.
-   - Publishes a new message indicating the job is complete.
+   - Sends a new message indicating the conversion is complete.
 
 3. **Notification Service**
    - Consumes messages about completed conversions.
